@@ -27,9 +27,9 @@ void *check_Row(void *params)
 {
     int vis[9];
     parameters* p = (parameters *) params;
-    for(int i = 0; i < 9; i ++ ){
+    for(int i = p->row; i < 9; i ++ ){
         memset(vis, 0, sizeof(vis));
-        for(int j = 0; j < 9; j ++)
+        for(int j = p->column; j < 9; j ++)
         {   
             vis[g[i][j]] ++;
             if(vis[g[i][j]] > 1)  return (void*)0;
@@ -43,9 +43,9 @@ void *check_Col(void *params)
 {
     int vis[9];
     parameters *p = (parameters *) params;
-    for(int j = 0; j < 9; j ++ ){
+    for(int j = p->column; j < 9; j ++ ){
         memset(vis, 0, sizeof(vis));
-        for(int i = 0; i < 9; i ++ ){
+        for(int i = p->row; i < 9; i ++ ){
             vis[g[j][i]] ++;
             if(vis[g[j][i]] > 1 )   return (void *)0;
         }
@@ -128,5 +128,3 @@ int main()
     if(flag)    puts("success");
     else    puts("fail");
 }
-
-

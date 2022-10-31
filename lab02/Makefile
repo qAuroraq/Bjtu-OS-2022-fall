@@ -1,10 +1,14 @@
-SOURCE = $(wildcrad *.c)
-TARGETS = $(patsubst %.c, %, $(SOURCE))
-CC = gcc
+SOURCE = $(wildcard *.c)
+TARGETS = $(patsubst %.c, %,$(SOURCE))
+     
+CC =gcc
 CFLAGS = -Wall -g
+     
 all:$(TARGETS)
-$(TARGETS):%:%.C
+     
+$(TARGETS):%:%.c
 	$(CC) $< $(CFLAGS) -o $@
-.PHONY:clean all
+
+.PHONY:clean
 clean:
-	rm *.o
+	rm *.o 

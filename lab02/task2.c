@@ -28,6 +28,7 @@ void* my_sort(void *data)
     }
     for(int i = st; i < ed; i ++ )  printf("%d ",array[i]);
     puts("");
+    return (void*)0;
 }
 
 void* merge_array(void *data)
@@ -65,6 +66,7 @@ void* merge_array(void *data)
         array[i] = *p;
         p ++;
     }
+    return (void*)0;
 }
     
 int main()
