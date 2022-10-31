@@ -8,7 +8,7 @@ typedef struct{
     int ed;
 }parameters;
 
-int array[11] = {0,1,2,3,5,6,4,7,8,9};
+int array[16] = {0,1,2,3,5,6,4,7,8,9,88,99,22,33,56,48};
 
 void* my_sort(void *data)
 {
@@ -26,6 +26,7 @@ void* my_sort(void *data)
             }
         }
     }
+    printf("数组两部分分别为:");
     for(int i = st; i < ed; i ++ )  printf("%d ",array[i]);
     puts("");
     return (void*)0;
@@ -73,13 +74,13 @@ int main()
 {
     parameters* data = (parameters *)malloc(sizeof (parameters));
     data->st = 0;
-    data->ed = 10;
+    data->ed = 16;
     parameters *data1 = (parameters *)malloc(sizeof (parameters));
     data1->st = 0;
-    data1->ed = 5;
+    data1->ed = data->ed / 2;
     parameters *data2 = (parameters *)malloc(sizeof (parameters));
-    data2->st = 5;
-    data2->ed = 10;
+    data2->st = data1->ed;
+    data2->ed = data->ed;
     pthread_t sort1,sort2,merge;
     pthread_create(&sort1, NULL, my_sort, (void *)data1);
     pthread_create(&sort2, NULL, my_sort, (void *)data2);
@@ -87,7 +88,8 @@ int main()
     pthread_join(sort2, NULL);
     pthread_create(&merge, NULL, merge_array, (void *)data);
     pthread_join(merge, NULL);
-    for(int i = 0; i < 10; i ++ ){
+    printf("排序后结果为:");
+    for(int i = 0; i < data->ed; i ++ ){
         printf("%d ", array[i]);
     }
     puts("");
