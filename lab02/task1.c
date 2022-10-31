@@ -8,15 +8,16 @@ typedef struct{
     int column;
 }parameters;
 
-int g[9][9] = {{0, 1, 2, 3, 4, 5, 6, 7, 8},
-               {1, 2, 3, 4, 5, 6, 7, 8, 0},
-               {2, 3, 4, 5, 6, 7, 8, 9, 1},
+int g[9][9] = {
+               {0, 1, 2, 3, 4, 5, 6, 7, 8},
                {3, 4, 5, 6, 7, 8, 0, 1, 2},
-               {4, 5, 6, 7, 8, 0, 1, 2, 3},
-               {5, 6, 7, 8, 0, 1, 2, 3, 4},
-               {6, 7, 8, 0, 1, 2, 3, 4, 5},
-               {7, 8, 0, 1, 2, 3, 4, 5, 6},
-               {8, 0, 1, 2, 3, 4, 5, 6, 7},
+               {6, 7, 8, 2, 1, 2, 3, 4, 5},
+               {1, 2, 0, 4, 5, 3, 7, 8, 6},
+               {4, 5, 3, 7, 8, 6, 1, 2, 0},
+               {7, 8, 6, 1, 2, 0, 4, 5, 3},
+               {2, 0, 1, 5, 3, 4, 8, 6, 7},
+               {5, 3, 4, 8, 6, 7, 2, 0, 1},
+               {8, 6, 7, 2, 0, 1, 5, 3, 4},
               };
 
 void *check_Row(void *param);
@@ -73,10 +74,10 @@ int main()
     parameters *data = (parameters *)malloc(sizeof(parameters));
     data->row = 0;
     data->column = 0;
-    void *res[11];
+    void *res[15];
     pthread_t t_Row,t_Col;
     //pthread_t Nine_1, Nine_2, Nine_3, Nine_4, Nine_5, Nine_6, Nine_7, Nine_8, Nine_9;
-    pthread_t Nine[9];
+    pthread_t Nine[15];
     pthread_create(&t_Row, NULL, check_Row, (void *)data);
     pthread_create(&t_Col, NULL ,check_Col, (void *)data);
     parameters *data1 = (parameters *)malloc(sizeof(parameters) * 9);
@@ -85,7 +86,7 @@ int main()
         for(int j = 0; j < 9; j += 3){
             (data1 + k)->column = j;
             (data1 + k)->row = i;
-            pthread_create(&Nine[i], NULL, check_Nine, (void *)(data1 + k));
+            pthread_create(&Nine[k], NULL, check_Nine, (void *)(data1 + k));
             k ++;
         }
     }
@@ -116,7 +117,7 @@ int main()
         pthread_join(t_Col, &res[1]);
         if((int *)res[1] == 0)  flag = 0;
         if(flag){
-            for(int i = 2; i < 11; i ++ ){
+            for(int i = 0; i < 9; i ++ ){
                 pthread_join(Nine[i], &res[i]);
                 if((int *)res[i] == 0) {
                     flag = 0;
@@ -125,6 +126,6 @@ int main()
             }
         }
     }
-    if(flag)    puts("success");
-    else    puts("fail");
+    if(flag)    puts("The Sudoku is legal!");
+    else    puts("The Sudoku is illegal!");
 }
